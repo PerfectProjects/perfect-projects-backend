@@ -13,4 +13,4 @@ class SignUpController:
             self.cognito_pool_data.get("COGNITO_POOL_CLIENT_SECRET"))
 
     def create_account(self, new_user):
-        self._cognito_provider.create_user(new_user)
+        return self._cognito_provider.create_user(new_user)
