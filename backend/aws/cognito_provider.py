@@ -8,10 +8,10 @@ from botocore.exceptions import ClientError
 
 class CognitoProvider:
 
-    def __init__(self):
+    def __init__(self, app_client_id, app_client_secret):
         self.client = boto3.client("cognito-idp")
-        self.app_client_id = ""
-        self.app_client_secret = ""
+        self.app_client_id = app_client_id
+        self.app_client_secret = app_client_secret
         self.username = None
         self.password = None
         self.email = None
