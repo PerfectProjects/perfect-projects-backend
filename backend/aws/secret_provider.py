@@ -12,8 +12,6 @@ class SecretProvider:
         self._region_name = "eu-central-1"
 
     def get_secret(self):
-
-        # Create a Secrets Manager client
         session = boto3.session.Session()
         client = session.client(
             service_name="secretsmanager",

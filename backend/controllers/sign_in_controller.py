@@ -10,4 +10,4 @@ class SignInController:
             self._cognito_pool_data.get("COGNITO_POOL_CLIENT_SECRET"))
 
     def sign_in(self, user):
-        pass
+        return self._cognito_provider.sign_in(user)

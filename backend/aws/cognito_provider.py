@@ -3,7 +3,6 @@ import hashlib
 import hmac
 
 import boto3
-from botocore.exceptions import ClientError
 
 
 class CognitoProvider:
@@ -12,9 +11,6 @@ class CognitoProvider:
         self.client = boto3.client("cognito-idp")
         self.app_client_id = app_client_id
         self.app_client_secret = app_client_secret
-        self.username = None
-        self.password = None
-        self.email = None
 
     def _create_secret_hash(self, username):
         message = bytes(username + self.app_client_id, "utf-8")
@@ -22,20 +18,47 @@ class CognitoProvider:
         return base64.b64encode(hmac.new(key, message, digestmod=hashlib.sha256).digest()).decode()
 
     def create_user(self, new_user):
-        self.username = new_user.get("nickname")
-        self.email = new_user.get("email")
-        self.password = new_user.get("password")
+        username = new_user.get("username")
+        email = new_user.get("email")
+        password = new_user.get("password")
 
-        secret_hash = self._create_secret_hash(self.username)
+        secret_hash = self._create_secret_hash(username)
 
         try:
             self.client.sign_up(
                 ClientId=self.app_client_id,
                 SecretHash=secret_hash,
-                Username=self.username,
-                Password=self.password,
-                UserAttributes=[{"Name": "email", "Value": self.email}])
-        except ClientError as error:
+                Username=username,
+                Password=password,
+                UserAttributes=[{"Name": "email", "Value": email}])
+        except Exception as error:
+            print(error)
+            return False
+        return True
+
+    def sign_in(self, user):
+        username = user.get("username")
+        password = user.get("password")
+
+        secret_hash = self._create_secret_hash(username)
+
+        try:
+            response = self.client.initiate_auth(
+                AuthFlow="USER_PASSWORD_AUTH",
+                AuthParameters={
+                    "USERNAME": username,
+                    "PASSWORD": password,
+                    "SECRET_HASH": secret_hash
+                },
+                ClientMetadata={
+                    "USERNAME": username,
+                    "PASSWORD": password
+                },
+                ClientId=self.app_client_id)
+
+            print("response!")
+            print(response)
+        except Exception as error:
             print(error)
             return False
         return True
