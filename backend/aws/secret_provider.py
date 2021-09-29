@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 class SecretProvider:
 
     def __init__(self):
-        self._secret_name = "COGNITO_POOL_DATA"
+        self._secret_name = "COGNITO_POOL_CLIENT_DATA"
         self._region_name = "eu-central-1"
 
     def get_secret(self):
