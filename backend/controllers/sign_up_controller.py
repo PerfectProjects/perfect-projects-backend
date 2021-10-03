@@ -11,3 +11,9 @@ class SignUpController:
 
     def create_account(self, new_user):
         return self._cognito_provider.create_user(new_user)
+
+    def verify_account(self, verify_code):
+        #TODO
+        print("Hello, verify code is: ")
+        print(verify_code)
+        pass
