@@ -3,6 +3,7 @@ import hashlib
 import hmac
 
 import boto3
+from botocore.exceptions import ClientError
 
 
 class CognitoProvider:
@@ -55,6 +56,20 @@ class CognitoProvider:
                     "PASSWORD": password
                 },
                 ClientId=self.app_client_id)
+
+            print("response!")
+            print(response)
+        except ClientError as error:
+            print(error)
+            return False
+        return response
+
+    def verify_account(self, verify_code, token):
+        try:
+            response = self.client.verify_user_attribute(
+                AccessToken=token,
+                AttributeName="email",
+                Code=verify_code)
 
             print("response!")
             print(response)

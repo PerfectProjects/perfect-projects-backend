@@ -12,4 +12,4 @@ def sign_up_endpoint():
     decoded_data = request.data.decode()
     decoded_data = json.loads(decoded_data)
     user = decoded_data.get("user")
-    return {"success": SignInController().sign_in(user)}
+    return {"authorization": SignInController().sign_in(user)}
