@@ -1,7 +1,7 @@
 import json
 
 from flask import Blueprint, request, Response
-from backend.controllers.sign_up_controller import SignUpController
+from backend.controllers.register_account_controller import RegisterAccountController
 
 verify_account = Blueprint('verify_account', __name__)
 
@@ -11,7 +11,5 @@ def verify_account_endpoint():
     decoded_data = request.data.decode()
     decoded_data = json.loads(decoded_data)
     verify_code = decoded_data.get("verifyCode")
-
-    print("hello!@! !!")
-    return Response(json.dumps({"success": SignUpController().verify_account(verify_code)}), status=200,
+    return Response(json.dumps({"success": RegisterAccountController().verify_account(verify_code)}), status=200,
                     mimetype='application/json')

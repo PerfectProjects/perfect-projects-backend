@@ -2,7 +2,7 @@ from backend.aws.cognito_provider import CognitoProvider
 from backend.aws.secret_provider import SecretProvider
 
 
-class SignUpController:
+class RegisterAccountController:
     def __init__(self):
         self._cognito_pool_data = SecretProvider().get_secret()
         self._cognito_provider = CognitoProvider(

@@ -1,15 +1,13 @@
 import json
 
 from flask import Blueprint, request, Response
-from backend.controllers.sign_up_controller import SignUpController
+from backend.controllers.register_account_controller import RegisterAccountController
 
 user_profile = Blueprint('user_profile', __name__)
 
 
 @user_profile.route('/get-user', methods=["GET"])
 def get_user_endpoint():
-    print("Hello!")
-
     projects = [
         {"projectId": 613211, "projectName": "Simple Game!"},
         {"projectId": 255411, "projectName": "Fancy Bathroom"},
