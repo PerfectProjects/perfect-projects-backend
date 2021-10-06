@@ -57,8 +57,6 @@ class CognitoProvider:
                 },
                 ClientId=self.app_client_id)
 
-            print("response!")
-            print(response)
         except ClientError as error:
             print(error)
             return False
@@ -68,15 +66,12 @@ class CognitoProvider:
         secret_hash = self._create_secret_hash(username)
 
         try:
-            response = self.client.confirm_sign_up(
+            self.client.confirm_sign_up(
                 ClientId=self.app_client_id,
                 SecretHash=secret_hash,
                 Username=username,
                 ConfirmationCode=confirmation_code,
                 ForceAliasCreation=False,)
-
-            print("response!")
-            print(response)
         except Exception as error:
             print(error)
             return False
