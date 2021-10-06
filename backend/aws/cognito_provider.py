@@ -64,12 +64,16 @@ class CognitoProvider:
             return False
         return response
 
-    def verify_account(self, verify_code, token):
+    def verify_account(self, username, confirmation_code):
+        secret_hash = self._create_secret_hash(username)
+
         try:
-            response = self.client.verify_user_attribute(
-                AccessToken=token,
-                AttributeName="email",
-                Code=verify_code)
+            response = self.client.confirm_sign_up(
+                ClientId=self.app_client_id,
+                SecretHash=secret_hash,
+                Username=username,
+                ConfirmationCode=confirmation_code,
+                ForceAliasCreation=False,)
 
             print("response!")
             print(response)

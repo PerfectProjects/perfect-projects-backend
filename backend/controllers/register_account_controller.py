@@ -12,5 +12,5 @@ class RegisterAccountController:
     def create_account(self, new_user):
         return self._cognito_provider.create_user(new_user)
 
-    def verify_account(self, verify_code, authorization):
-        return self._cognito_provider.verify_account(verify_code, authorization)
+    def verify_account(self, username, confirmation_code):
+        return self._cognito_provider.verify_account(username, confirmation_code)
