@@ -32,7 +32,7 @@ class CognitoProvider:
                 Username=username,
                 Password=password,
                 UserAttributes=[{"Name": "email", "Value": email}])
-        except Exception as error:
+        except ClientError as error:
             print(error)
             return False
         return True
@@ -72,7 +72,7 @@ class CognitoProvider:
                 Username=username,
                 ConfirmationCode=confirmation_code,
                 ForceAliasCreation=False,)
-        except Exception as error:
+        except ClientError as error:
             print(error)
             return False
         return True
