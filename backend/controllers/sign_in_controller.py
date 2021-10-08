@@ -10,4 +10,14 @@ class SignInController:
             self._cognito_pool_data.get("COGNITO_POOL_CLIENT_SECRET"))
 
     def sign_in(self, user):
-        return self._cognito_provider.sign_in(user)
+        cognito_result = self._cognito_provider.sign_in(user)
+        if cognito_result is not False:
+            payload = {
+                "accessToken": cognito_result["AuthenticationResult"]["AccessToken"],
+                "refreshToken": cognito_result["AuthenticationResult"]["RefreshToken"]
+            }
+            return payload
+        return False
+
+    def refresh_token(self, refresh_token):
+        return self._cognito_provider.refresh_token(refresh_token)

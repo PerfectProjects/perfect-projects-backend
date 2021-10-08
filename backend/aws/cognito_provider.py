@@ -71,8 +71,27 @@ class CognitoProvider:
                 SecretHash=secret_hash,
                 Username=username,
                 ConfirmationCode=confirmation_code,
-                ForceAliasCreation=False,)
+                ForceAliasCreation=False, )
         except ClientError as error:
             print(error)
             return False
         return True
+
+    def refresh_token(self, refresh_token):
+
+        secret_hash = self._create_secret_hash("oskar123")
+
+        try:
+            response = self.client.initiate_auth(
+                AuthFlow="REFRESH_TOKEN_AUTH",
+                AuthParameters={
+                    "REFRESH_TOKEN": refresh_token,
+                    "SECRET_HASH": secret_hash
+                },
+                ClientId=self.app_client_id)
+
+            print(response)
+        except ClientError as error:
+            print(error)
+            return False
+        return response
