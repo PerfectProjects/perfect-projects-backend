@@ -19,5 +19,7 @@ class SignInController:
             return payload
         return False
 
-    def refresh_token(self, refresh_token):
-        return self._cognito_provider.refresh_token(refresh_token)
+    def refresh_token(self, refresh_token, username):
+        response = self._cognito_provider.refresh_token(refresh_token, username)
+        payload = {"accessToken": response["AuthenticationResult"]["AccessToken"]}
+        return payload

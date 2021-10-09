@@ -8,7 +8,7 @@ from backend.rest.user_profile_endpoint import user_profile
 from backend.rest.verify_account_endpoint import verify_account
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, supports_credentials=True)
 
 # Registered endpoints
 app.register_blueprint(sign_up)

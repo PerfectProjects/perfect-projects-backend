@@ -77,9 +77,8 @@ class CognitoProvider:
             return False
         return True
 
-    def refresh_token(self, refresh_token):
-
-        secret_hash = self._create_secret_hash("oskar123")
+    def refresh_token(self, refresh_token, username):
+        secret_hash = self._create_secret_hash(username)
 
         try:
             response = self.client.initiate_auth(
@@ -89,8 +88,6 @@ class CognitoProvider:
                     "SECRET_HASH": secret_hash
                 },
                 ClientId=self.app_client_id)
-
-            print(response)
         except ClientError as error:
             print(error)
             return False
