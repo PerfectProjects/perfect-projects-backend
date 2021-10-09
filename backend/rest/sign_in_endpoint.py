@@ -1,7 +1,7 @@
 import json
 
 import flask
-from flask import Blueprint, request
+from flask import Blueprint, request, Flask, jsonify
 
 from backend.controllers.sign_in_controller import SignInController
 
@@ -13,4 +13,4 @@ def sign_in_endpoint():
     decoded_data = request.data.decode()
     decoded_data = json.loads(decoded_data)
     user = decoded_data.get("user")
-    return {"payload": SignInController().sign_in(user)}
+    return SignInController().sign_in(user)
