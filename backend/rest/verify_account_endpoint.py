@@ -12,6 +12,4 @@ def verify_account_endpoint():
     decoded_data = json.loads(decoded_data)
     username = decoded_data.get("username")
     confirmation_code = decoded_data.get("confirmationCode")
-    return Response(json.dumps({"success": RegisterAccountController().verify_account(username, confirmation_code)}),
-                    status=200,
-                    mimetype='application/json')
+    return RegisterAccountController().verify_account(username, confirmation_code)

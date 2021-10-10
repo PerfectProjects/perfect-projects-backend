@@ -11,6 +11,4 @@ def sign_up_endpoint():
     decoded_data = request.data.decode()
     decoded_data = json.loads(decoded_data)
     new_user = decoded_data.get("newUser")
-    return Response(json.dumps({"success": RegisterAccountController().create_account(new_user)}),
-                    status=200,
-                    mimetype='application/json')
+    return RegisterAccountController().create_account(new_user)

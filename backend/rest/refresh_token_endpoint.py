@@ -9,4 +9,5 @@ refresh_token = Blueprint("refresh_token", __name__)
 def refresh_token_endpoint():
     ref_token = request.headers.get("refreshToken")
     username = request.headers.get("username")
-    return {"accessToken": SignInController().refresh_token(ref_token, username)}
+    return SignInController().refresh_token(ref_token, username)
+   # return {"accessToken": SignInController().refresh_token(ref_token, username)}

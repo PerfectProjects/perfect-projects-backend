@@ -1,7 +1,6 @@
 import json
 
-import flask
-from flask import Blueprint, request, Flask, jsonify
+from flask import Blueprint, request
 
 from backend.controllers.sign_in_controller import SignInController
 

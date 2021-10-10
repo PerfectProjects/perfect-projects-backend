@@ -21,9 +21,13 @@ class SignInController:
                 "refreshToken": cognito_result["AuthenticationResult"]["RefreshToken"]
             }
             return flask.Response(json.dumps({"payload": payload}), status=200)
-        return flask.Response(status=401)
+        return flask.Response(status=400)
 
     def refresh_token(self, refresh_token, username):
         response = self._cognito_provider.refresh_token(refresh_token, username)
-        payload = {"accessToken": response["AuthenticationResult"]["AccessToken"]}
-        return payload
+        if response is not False:
+            payload = {
+                "accessToken": response["AuthenticationResult"]["AccessToken"]
+            }
+            return flask.Response(json.dumps({"payload": payload}), status=200)
+        return flask.Response(status=401)
