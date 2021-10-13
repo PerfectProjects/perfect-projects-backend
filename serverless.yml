@@ -1,0 +1,33 @@
+service: perfect-projects-backend
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: python3.8
+  lambdaHashingVersion: 20201221
+  iam:
+    role:
+      name: perfect-project-backend-role
+      statements:
+        - Effect: 'Allow'
+          Resource: '*'
+          Action: 'iam:DeleteBucket'
+  deploymentBucket:
+    name: perfect-project-backend
+
+custom:
+  wsgi:
+    app: backend.app
+
+functions:
+  api:
+    handler: wsgi_handler.handler
+    events:
+      - http: ANY /
+
+
+plugins:
+  - serverless-deployment-bucket
+  - serverless-wsgi
+  - serverless-python-requirements
