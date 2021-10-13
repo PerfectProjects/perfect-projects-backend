@@ -26,7 +26,6 @@ functions:
     events:
       - http: ANY /
 
-
 plugins:
   - serverless-deployment-bucket
   - serverless-wsgi
