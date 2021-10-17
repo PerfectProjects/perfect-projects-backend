@@ -18,9 +18,13 @@ class SignInController:
         if cognito_result is not False:
             payload = {
                 "accessToken": cognito_result["AuthenticationResult"]["AccessToken"],
-                "refreshToken": cognito_result["AuthenticationResult"]["RefreshToken"]
             }
-            return flask.Response(json.dumps({"payload": payload}), status=200)
+            response = flask.Response(json.dumps({"payload": payload}), status=200)
+            response.set_cookie("refreshToken",
+                                cognito_result["AuthenticationResult"]["RefreshToken"],
+                                samesite="Strict")
+            print(response)
+            return response
         return flask.Response(status=401)
 
     def refresh_token(self, refresh_token, username):

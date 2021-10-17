@@ -11,8 +11,8 @@ provider:
       name: perfect-project-backend-role
       statements:
         - Effect: 'Allow'
+          Action: '*'
           Resource: '*'
-          Action: 'iam:DeleteBucket'
   deploymentBucket:
     name: perfect-project-backend
 
@@ -25,6 +25,7 @@ functions:
     handler: wsgi_handler.handler
     events:
       - http: ANY /
+      - http: ANY /{proxy+}
 
 plugins:
   - serverless-deployment-bucket
