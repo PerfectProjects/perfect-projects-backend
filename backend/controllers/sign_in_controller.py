@@ -22,8 +22,8 @@ class SignInController:
             response = flask.Response(json.dumps({"payload": payload}), status=200)
             response.set_cookie("refreshToken",
                                 cognito_result["AuthenticationResult"]["RefreshToken"],
-                                samesite="Strict")
-            print(response)
+                                samesite="Strict",
+                                httponly=True)
             return response
         return flask.Response(status=401)
 
