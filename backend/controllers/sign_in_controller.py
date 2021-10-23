@@ -1,9 +1,12 @@
+import base64
 import json
 
 import flask
 
 from backend.aws.cognito_provider import CognitoProvider
 from backend.aws.secret_provider import SecretProvider
+from backend.globals import REFRESH_TOKEN_EXPIRE
+from datetime import datetime
 
 
 class SignInController:
@@ -25,6 +28,12 @@ class SignInController:
                                 samesite="None",
                                 secure=True,
                                 httponly=True)
+            response.set_cookie("username",
+                                base64.b64encode(user.get("username").encode()).decode(),
+                                samesite="None",
+                                secure=True,
+                                domain=".perfect-projects.com",
+                                expires=datetime.now().timestamp() + REFRESH_TOKEN_EXPIRE * 60)
             return response
         return flask.Response(status=401)
 
