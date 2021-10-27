@@ -4,6 +4,7 @@ import hmac
 
 import boto3
 from botocore.exceptions import ClientError
+from flask import g
 
 
 class CognitoProvider:
@@ -88,6 +89,16 @@ class CognitoProvider:
                     "SECRET_HASH": secret_hash
                 },
                 ClientId=self.app_client_id)
+        except ClientError as error:
+            print(error)
+            return False
+        return response
+
+    def get_user(self, access_token):
+        try:
+            response = self.client.get_user(
+                AccessToken=access_token
+            )
         except ClientError as error:
             print(error)
             return False

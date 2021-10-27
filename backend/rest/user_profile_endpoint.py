@@ -2,11 +2,13 @@ import json
 
 from flask import Blueprint, request, Response
 from backend.controllers.register_account_controller import RegisterAccountController
+from backend.decorators import require_authentication
 
 user_profile = Blueprint('user_profile', __name__)
 
 
 @user_profile.route('/get-user', methods=["GET"])
+@require_authentication
 def get_user_endpoint():
     projects = [
         {"projectId": 613211, "projectName": "Simple Game!"},
