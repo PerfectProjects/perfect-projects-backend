@@ -27,7 +27,8 @@ class SignInController:
                                 cognito_result["AuthenticationResult"]["RefreshToken"],
                                 samesite="None",
                                 secure=True,
-                                httponly=True)
+                                httponly=True,
+                                expires=datetime.now().timestamp() + REFRESH_TOKEN_EXPIRE * 60)
             response.set_cookie("username",
                                 base64.b64encode(user.get("username").encode()).decode(),
                                 samesite="None",
