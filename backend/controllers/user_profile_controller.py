@@ -1,20 +1,32 @@
 import json
 
-import flask
-from flask import Response
+from flask import Response, g
 
-from backend.aws.cognito_provider import CognitoProvider
 from backend.aws.dynamodb.project_dynamodb_provider import ProjectDynamodbProvider
-from backend.aws.secret_provider import SecretProvider
 
 
 class UserProfileController:
     def __init__(self):
         self.dynamodb = ProjectDynamodbProvider("project")
+        self.user_id = g.user.get("Username")
 
     def add_project(self, project):
-        response = self.dynamodb.add_item(project)
+        result = self.dynamodb.add_item(project, self.user_id)
 
-        return Response(json.dumps({"success": response}),
+        return Response(json.dumps({"success": result}),
+                        status=200,
+                        mimetype='application/json')
+
+    def get_all_projects(self):
+        result = self.dynamodb.get_all_user_projects(self.user_id)
+        items = result.get("Items")
+        projects = []
+        for item in items:
+            projects.append({
+                "id": item.get("id"),
+                "title": item.get("title"),
+                "description": item.get("description")
+            })
+        return Response(json.dumps({"projects": projects}),
                         status=200,
                         mimetype='application/json')

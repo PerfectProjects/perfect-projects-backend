@@ -11,10 +11,7 @@ user_profile = Blueprint('user_profile', __name__)
 @user_profile.route('/user-profile', methods=["GET"])
 @require_authentication
 def user_profile_endpoint():
-    return Response(json.dumps({
-        "projects": {}}),
-                    status=200,
-                    mimetype='application/json')
+    return UserProfileController().get_all_projects()
 
 
 @user_profile.route('/user-profile/add-project', methods=["POST"])

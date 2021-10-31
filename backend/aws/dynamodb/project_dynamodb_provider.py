@@ -1,36 +1,37 @@
 import time
 import uuid
 
+from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
-from flask import g
 
 from backend.aws.dynamodb.base_dynamodb_provider import BaseDynamodbProvider
 
 
 class ProjectDynamodbProvider(BaseDynamodbProvider):
     def __init__(self, table_name):
-        super().__init__()
-        self.table_name = table_name
+        super().__init__(table_name)
 
-    def add_item(self, project):
-        table = self.dynamodb.Table(self.table_name)
+    def add_item(self, project, user_id):
         item_id = str(uuid.uuid4())
         item = {
             "id": item_id,
-            "user": g.user.get("Username"),
+            "user_id": user_id,
             "title": project.get("title"),
             "description": project.get("description")
         }
         try:
-            table.put_item(TableName=self.table_name,
-                           Item=item)
+            self.table.put_item(Item=item)
         except ClientError as error:
             print(error)
             return False
         return True
 
-    # def delete_item(self, project):
-    #     print("Delete item")
-    #
-    # def update_item(self, project):
-    #     print("Update item")
+    def get_all_user_projects(self, user_id):
+        try:
+            result = self.table.query(IndexName="user_id",
+                                      KeyConditionExpression=Key("user_id").eq(user_id))
+        except ClientError as error:
+            print(error)
+            return False
+        return result
+
