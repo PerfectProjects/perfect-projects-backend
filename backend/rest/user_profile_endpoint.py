@@ -1,22 +1,26 @@
 import json
 
-from flask import Blueprint, request, Response
-from backend.controllers.register_account_controller import RegisterAccountController
+from flask import Blueprint, Response, request
+
+from backend.controllers.user_profile_controller import UserProfileController
 from backend.decorators import require_authentication
 
 user_profile = Blueprint('user_profile', __name__)
 
 
-@user_profile.route('/get-user', methods=["GET"])
+@user_profile.route('/user-profile', methods=["GET"])
 @require_authentication
-def get_user_endpoint():
-    projects = [
-        {"projectId": 613211, "projectName": "Simple Game!"},
-        {"projectId": 255411, "projectName": "Fancy Bathroom"},
-        {"projectId": 544411, "projectName": "Sea Picture"}]
-    user_name = "reoskaro"
+def user_profile_endpoint():
     return Response(json.dumps({
-        "projects": projects,
-        "userName": user_name}),
+        "projects": {}}),
                     status=200,
                     mimetype='application/json')
+
+
+@user_profile.route('/user-profile/add-project', methods=["POST"])
+@require_authentication
+def add_project_endpoint():
+    decoded_data = request.data.decode()
+    decoded_data = json.loads(decoded_data)
+    project = decoded_data.get("projectData")
+    return UserProfileController().add_project(project)
