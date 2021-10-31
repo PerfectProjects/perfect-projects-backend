@@ -21,3 +21,12 @@ def add_project_endpoint():
     decoded_data = json.loads(decoded_data)
     project = decoded_data.get("projectData")
     return UserProfileController().add_project(project)
+
+
+@user_profile.route('/user-profile/delete-project', methods=["DELETE"])
+@require_authentication
+def delete_project_endpoint():
+    decoded_data = request.data.decode()
+    decoded_data = json.loads(decoded_data)
+    project_id = decoded_data.get("projectId")
+    return UserProfileController().delete_project(project_id)

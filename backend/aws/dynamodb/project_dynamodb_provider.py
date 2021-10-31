@@ -11,7 +11,7 @@ class ProjectDynamodbProvider(BaseDynamodbProvider):
     def __init__(self, table_name):
         super().__init__(table_name)
 
-    def add_item(self, project, user_id):
+    def add_project(self, project, user_id):
         item_id = str(uuid.uuid4())
         item = {
             "id": item_id,
@@ -35,3 +35,10 @@ class ProjectDynamodbProvider(BaseDynamodbProvider):
             return False
         return result
 
+    def delete_project(self, project_id):
+        try:
+            self.table.delete_item(Key={"id": project_id})
+        except ClientError as error:
+            print(error)
+            return False
+        return True

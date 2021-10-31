@@ -11,7 +11,7 @@ class UserProfileController:
         self.user_id = g.user.get("Username")
 
     def add_project(self, project):
-        result = self.dynamodb.add_item(project, self.user_id)
+        result = self.dynamodb.add_project(project, self.user_id)
 
         return Response(json.dumps({"success": result}),
                         status=200,
@@ -29,4 +29,17 @@ class UserProfileController:
             })
         return Response(json.dumps({"projects": projects}),
                         status=200,
+                        mimetype='application/json')
+
+    def delete_project(self, project_id):
+
+        result = self.dynamodb.delete_project(project_id)
+
+        if result:
+            return Response(json.dumps({"success": result}),
+                            status=200,
+                            mimetype='application/json')
+
+        return Response(json.dumps({"success": result}),
+                        status=400,
                         mimetype='application/json')
