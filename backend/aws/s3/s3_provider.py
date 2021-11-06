@@ -3,10 +3,10 @@ import boto3
 from botocore.exceptions import ClientError
 
 
-class BaseS3Provider:
-    def __init__(self, bucket_name):
-        self.s3 = boto3.resource("s3")
-        self.bucket_name = bucket_name
+class S3Provider:
+    def __init__(self):
+        self.s3 = boto3.client("s3")
+        self.bucket_name = "perfect-projects-s3-storage"
 
     def upload_object_file(self, binary_file, file_key):
         try:

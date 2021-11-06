@@ -1,4 +1,3 @@
-import time
 import uuid
 
 from boto3.dynamodb.conditions import Key
@@ -8,23 +7,22 @@ from backend.aws.dynamodb.base_dynamodb_provider import BaseDynamodbProvider
 
 
 class ProjectDynamodbProvider(BaseDynamodbProvider):
-    def __init__(self, table_name):
-        super().__init__(table_name)
+    def __init__(self):
+        super().__init__("project")
 
     def add_project(self, project, user_id):
         item_id = str(uuid.uuid4())
         item = {
             "id": item_id,
             "user_id": user_id,
-            "title": project.get("title"),
-            "description": project.get("description")
+            "title": project.get("title")
         }
         try:
             self.table.put_item(Item=item)
         except ClientError as error:
             print(error)
             return False
-        return True
+        return item_id
 
     def get_all_user_projects(self, user_id):
         try:
