@@ -1,20 +1,14 @@
 from flask import Flask
 from flask_cors import CORS
 
+from backend.rest.access_endpoint import access
 from backend.rest.project_endpoint import project
-from backend.rest.refresh_token_endpoint import refresh_token
-from backend.rest.sign_in_endpoint import sign_in
-from backend.rest.sign_up_endpoint import sign_up
 from backend.rest.user_profile_endpoint import user_profile
-from backend.rest.verify_account_endpoint import verify_account
 
 app = Flask(__name__)
 cors = CORS(app, supports_credentials=True)
 
 # Registered endpoints
-app.register_blueprint(sign_up)
-app.register_blueprint(sign_in)
+app.register_blueprint(access)
 app.register_blueprint(user_profile)
-app.register_blueprint(verify_account)
-app.register_blueprint(refresh_token)
 app.register_blueprint(project)

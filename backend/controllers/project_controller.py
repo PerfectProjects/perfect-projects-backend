@@ -1,3 +1,4 @@
+import io
 import json
 
 from flask import Response, g
@@ -27,3 +28,29 @@ class ProjectController:
                             status=200,
                             mimetype='application/json')
         return Response(status=404, mimetype='application/json')
+
+    def delete_project(self, project_id):
+        dynamodb_result = self.dynamodb.delete_project(project_id)
+        s3_result = self.s3.delete_file(project_id)
+
+        if dynamodb_result and s3_result:
+            return Response(json.dumps({"success": True}),
+                            status=200,
+                            mimetype='application/json')
+
+        return Response(json.dumps({"success": False}),
+                        status=400,
+                        mimetype='application/json')
+
+    def add_project(self, project):
+        project_id = self.dynamodb.add_project(project, self.user_id)
+        if project_id:
+            description = project.get("description")
+            binary_file = io.BytesIO(description.encode("ascii"))
+            response = self.s3.upload_object_file(binary_file, project_id)
+            return Response(json.dumps({"success": response}),
+                            status=200,
+                            mimetype='application/json')
+        return Response(json.dumps({"success": False}),
+                        status=200,
+                        mimetype='application/json')
