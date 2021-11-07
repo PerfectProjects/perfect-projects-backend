@@ -39,6 +39,7 @@ class AccessController:
         return Response(status=401)
 
     def refresh_token(self, refresh_token, username):
+        print("dupa")
         response = self._cognito_provider.refresh_token(refresh_token, username)
         if response is not False:
             payload = {
@@ -67,4 +68,16 @@ class AccessController:
 
         return Response(json.dumps({"success": result}),
                         status=400,
+                        mimetype='application/json')
+
+    def sign_out(self, access_token):
+        result = self._cognito_provider.sign_out(access_token)
+
+        if result is True:
+            return Response(json.dumps({"success": result}),
+                            status=200,
+                            mimetype='application/json')
+
+        return Response(json.dumps({"success": result}),
+                        status=500,
                         mimetype='application/json')

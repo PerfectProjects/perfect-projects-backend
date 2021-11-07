@@ -103,3 +103,13 @@ class CognitoProvider:
             print(error)
             return False
         return response
+
+    def sign_out(self, access_token):
+        try:
+            self.client.global_sign_out(
+                AccessToken=access_token
+            )
+        except ClientError as error:
+            print(error)
+            return False
+        return True

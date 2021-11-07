@@ -3,6 +3,7 @@ import json
 from flask import Blueprint, request
 
 from backend.controllers.access_controller import AccessController
+from backend.decorators import require_authentication
 
 access = Blueprint("access", __name__)
 
@@ -37,3 +38,10 @@ def verify_account_endpoint():
     username = decoded_data.get("username")
     confirmation_code = decoded_data.get("confirmationCode")
     return AccessController().verify_account(username, confirmation_code)
+
+
+@access.route('/access/sign-out', methods=["POST"])
+@require_authentication
+def sign_out_endpoint():
+    access_token = request.headers.get("accessToken")
+    return AccessController().sign_out(access_token)
