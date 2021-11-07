@@ -40,3 +40,11 @@ class ProjectDynamodbProvider(BaseDynamodbProvider):
             print(error)
             return False
         return True
+
+    def get_project(self, project_id):
+        try:
+            item = self.table.get_item(Key={"id": project_id})
+        except ClientError as error:
+            print(error)
+            return False
+        return item

@@ -32,11 +32,12 @@ class UserProfileController:
         projects = []
         for item in items:
             item_id = item.get("id")
-            binary_item_description = self.s3.get_file(item_id).get("Body").read()
+            item_description = self.s3.get_file(item_id).get("Body").read().decode("utf-8")
             projects.append({
                 "id": item_id,
                 "title": item.get("title"),
-                "description": binary_item_description.decode("utf-8")})
+                "author": item.get("user_id"),
+                "description": item_description})
         return Response(json.dumps({"projects": projects}),
                         status=200,
                         mimetype='application/json')
