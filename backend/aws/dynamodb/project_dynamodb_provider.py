@@ -15,7 +15,9 @@ class ProjectDynamodbProvider(BaseDynamodbProvider):
         item = {
             "id": item_id,
             "user_id": user_id,
-            "title": project.get("title")
+            "title": project.get("title"),
+            "brief_description": project.get("briefDescription"),
+            "visible": project.get("visible")
         }
         try:
             self.table.put_item(Item=item)

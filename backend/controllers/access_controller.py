@@ -39,7 +39,6 @@ class AccessController:
         return Response(status=401)
 
     def refresh_token(self, refresh_token, username):
-        print("dupa")
         response = self._cognito_provider.refresh_token(refresh_token, username)
         if response is not False:
             payload = {
