@@ -31,3 +31,9 @@ def delete_project_endpoint():
     decoded_data = json.loads(decoded_data)
     project_id = decoded_data.get("projectId")
     return ProjectController().delete_project(project_id)
+
+
+@project.route('/projects', methods=["GET"])
+def get_project_page():
+    page = request.args.get("page")
+    return ProjectController().get_project_page(page)

@@ -3,15 +3,14 @@ import json
 
 from flask import Response, g
 
-from backend.aws.dynamodb.project_dynamodb_provider import ProjectDynamodbProvider
+from backend.aws.dynamodb.projects_dynamodb_provider import ProjectsDynamodbProvider
 from backend.aws.s3.s3_provider import S3Provider
 
 
 class ProjectController:
     def __init__(self):
-        self.dynamodb = ProjectDynamodbProvider()
+        self.dynamodb = ProjectsDynamodbProvider()
         self.s3 = S3Provider()
-        self.user_id = g.user.get("Username")
 
     def get_project(self, project_id):
         result = self.dynamodb.get_project(project_id)
@@ -48,7 +47,7 @@ class ProjectController:
                         mimetype='application/json')
 
     def add_project(self, project):
-        project_id = self.dynamodb.add_project(project, self.user_id)
+        project_id = self.dynamodb.add_project(project)
         if project_id:
             description = project.get("description")
             binary_description = io.BytesIO(description.encode("ascii"))
@@ -60,6 +59,12 @@ class ProjectController:
             return Response(json.dumps({"success": (response_picture and response_description)}),
                             status=200,
                             mimetype='application/json')
+        return Response(json.dumps({"success": False}),
+                        status=200,
+                        mimetype='application/json')
+
+    def get_project_page(self, page):
+        print("test")
         return Response(json.dumps({"success": False}),
                         status=200,
                         mimetype='application/json')

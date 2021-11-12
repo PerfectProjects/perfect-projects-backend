@@ -2,13 +2,13 @@ import json
 
 from flask import Response, g
 
-from backend.aws.dynamodb.project_dynamodb_provider import ProjectDynamodbProvider
+from backend.aws.dynamodb.projects_dynamodb_provider import ProjectsDynamodbProvider
 from backend.aws.s3.s3_provider import S3Provider
 
 
 class UserProfileController:
     def __init__(self):
-        self._dynamodb = ProjectDynamodbProvider()
+        self._dynamodb = ProjectsDynamodbProvider()
         self._s3 = S3Provider()
         self._user_id = g.user.get("Username")
 

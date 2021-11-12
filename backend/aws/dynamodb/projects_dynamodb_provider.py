@@ -1,3 +1,5 @@
+import calendar
+import datetime
 import uuid
 
 from boto3.dynamodb.conditions import Key
@@ -6,18 +8,22 @@ from botocore.exceptions import ClientError
 from backend.aws.dynamodb.base_dynamodb_provider import BaseDynamodbProvider
 
 
-class ProjectDynamodbProvider(BaseDynamodbProvider):
+class ProjectsDynamodbProvider(BaseDynamodbProvider):
     def __init__(self):
-        super().__init__("project")
+        super().__init__("projects")
 
-    def add_project(self, project, user_id):
+    def add_project(self, project):
         item_id = str(uuid.uuid4())
+        current_datetime = datetime.datetime.utcnow()
+        current_timetuple = current_datetime.utctimetuple()
+        current_timestamp = calendar.timegm(current_timetuple)
         item = {
             "id": item_id,
-            "user_id": user_id,
+            "user_id": project.get("author"),
             "title": project.get("title"),
             "brief_description": project.get("briefDescription"),
-            "visible": project.get("visible")
+            "visible": project.get("visible"),
+            "timestamp": current_timestamp
         }
         try:
             self.table.put_item(Item=item)
