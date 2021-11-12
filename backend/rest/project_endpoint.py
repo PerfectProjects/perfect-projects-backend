@@ -20,8 +20,8 @@ def project_endpoint():
 def add_project_endpoint():
     decoded_data = request.data.decode()
     decoded_data = json.loads(decoded_data)
-    project = decoded_data.get("projectData")
-    return ProjectController().add_project(project)
+    project_data = decoded_data.get("projectData")
+    return ProjectController().add_project(project_data)
 
 
 @project.route('/project', methods=["DELETE"])

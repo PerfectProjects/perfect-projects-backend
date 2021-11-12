@@ -52,7 +52,7 @@ class ProjectController:
         if project_id:
             description = project.get("description")
             binary_description = io.BytesIO(description.encode("ascii"))
-            picture = project.get("mainPhoto")
+            picture = project.get("mainPicture")
             binary_picture = io.BytesIO(picture.encode("ascii"))
             response_description = self.s3.upload_object_file(binary_description, f"{project_id}/description")
             response_picture = self.s3.upload_object_file(binary_picture, f"{project_id}/picture")
