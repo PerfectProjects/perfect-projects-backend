@@ -71,3 +71,17 @@ class ProjectsDynamodbProvider(BaseDynamodbProvider):
             print(error)
             return False
         return items
+
+    def update_project(self, project_data):
+        try:
+            self.table.update_item(
+                Key={"id": project_data.get("id"),
+                     "timestamp": int(project_data.get("timestamp"))},
+                UpdateExpression="set visible=:visible",
+                ExpressionAttributeValues={
+                    ":visible": project_data.get("visible"),
+                })
+        except ClientError as error:
+            print(error)
+            return False
+        return True

@@ -37,3 +37,12 @@ def delete_project_endpoint():
 def get_project_page():
     page = request.args.get("page")
     return ProjectController().get_project_page(int(page))
+
+
+@project.route('/project/update', methods=["POST"])
+@require_authentication
+def update_project():
+    decoded_data = request.data.decode()
+    decoded_data = json.loads(decoded_data)
+    project_data = decoded_data.get("projectData")
+    return ProjectController().update_project(project_data)

@@ -25,7 +25,8 @@ class ProjectController:
                 "mainPicture": item_picture,
                 "author": item.get("user_id"),
                 "briefDescription": item.get("brief_description"),
-                "visible": item.get("visible")
+                "visible": item.get("visible"),
+                "timestamp": item.get("timestamp")
             }
             return Response(json.dumps(project),
                             status=200,
@@ -77,9 +78,21 @@ class ProjectController:
                         "mainPicture": item_picture,
                         "author": item.get("user_id"),
                         "briefDescription": item.get("brief_description"),
-                        "visible": item.get("visible")
+                        "visible": item.get("visible"),
+                        "timestamp": item.get("timestamp")
                     })
             return Response(json.dumps({"projects": projects}),
                             status=200,
                             mimetype='application/json')
         return Response(status=404, mimetype='application/json')
+
+    def update_project(self, project_data):
+        response = self._dynamodb.update_project(project_data)
+        if response:
+            return Response(json.dumps({"success": True}),
+                            status=200,
+                            mimetype='application/json')
+
+        return Response(json.dumps({"success": False}),
+                        status=400,
+                        mimetype='application/json')

@@ -25,7 +25,8 @@ class UserProfileController:
                 "mainPicture": item_picture,
                 "author": item.get("user_id"),
                 "briefDescription": item.get("brief_description"),
-                "visible": item.get("visible")
+                "visible": item.get("visible"),
+                "timestamp": int(item.get("timestamp"))
             })
         return Response(json.dumps({"projects": projects}),
                         status=200,
