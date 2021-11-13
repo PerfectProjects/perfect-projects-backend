@@ -36,4 +36,4 @@ def delete_project_endpoint():
 @project.route('/projects', methods=["GET"])
 def get_project_page():
     page = request.args.get("page")
-    return ProjectController().get_project_page(page)
+    return ProjectController().get_project_page(int(page))

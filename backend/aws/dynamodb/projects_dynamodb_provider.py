@@ -56,3 +56,18 @@ class ProjectsDynamodbProvider(BaseDynamodbProvider):
             print(error)
             return False
         return item
+
+    def get_projects(self, page):
+        limit = 3
+        try:
+            response = self.table.scan(Limit=limit)
+            for x in range(page - 1):
+                last_evaluated_key = response.get("LastEvaluatedKey")
+                if last_evaluated_key is None:
+                    break
+                response = self.table.scan(Limit=limit, ExclusiveStartKey=response.get("LastEvaluatedKey"))
+            items = response.get("Items")
+        except ClientError as error:
+            print(error)
+            return False
+        return items
