@@ -6,7 +6,7 @@ from botocore.exceptions import ClientError
 class S3Provider:
     def __init__(self):
         self.s3 = boto3.client("s3")
-        self.bucket_name = "perfect-projects-s3-storage"
+        self.bucket_name = "perfect-projects-storage"
 
     def upload_object_file(self, binary_file, file_key):
         try:

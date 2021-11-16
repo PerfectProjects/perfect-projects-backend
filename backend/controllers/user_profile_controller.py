@@ -18,7 +18,13 @@ class UserProfileController:
         projects = []
         for item in items:
             item_id = item.get("id")
-            item_picture = self._s3.get_file(f"{item_id}/picture").get("Body").read().decode("ascii")
+            item_picture = self._s3.get_file(f"{item_id}/picture")
+
+            if item_picture:
+                item_picture = item_picture.get("Body").read().decode("ascii")
+            else:
+                item_picture = ""
+
             projects.append({
                 "id": item_id,
                 "title": item.get("title"),

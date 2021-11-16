@@ -26,7 +26,7 @@ class ProjectController:
                 "author": item.get("user_id"),
                 "briefDescription": item.get("brief_description"),
                 "visible": item.get("visible"),
-                "timestamp": item.get("timestamp")
+                "timestamp": int(item.get("timestamp"))
             }
             return Response(json.dumps(project),
                             status=200,
@@ -34,9 +34,13 @@ class ProjectController:
         return Response(status=404, mimetype='application/json')
 
     def delete_project(self, project_id):
+        print("yo")
         dynamodb_result = self._dynamodb.delete_project(project_id)
+        print(dynamodb_result)
         self._s3.delete_file(f"{project_id}/description")
+        print("yo")
         self._s3.delete_file(f"{project_id}/picture")
+        print("yo")
         s3_result = self._s3.delete_file(f"{project_id}/")
         if dynamodb_result and s3_result:
             return Response(json.dumps({"success": True}),
@@ -79,7 +83,7 @@ class ProjectController:
                         "author": item.get("user_id"),
                         "briefDescription": item.get("brief_description"),
                         "visible": item.get("visible"),
-                        "timestamp": item.get("timestamp")
+                        "timestamp": int(item.get("timestamp"))
                     })
             return Response(json.dumps({"projects": projects}),
                             status=200,

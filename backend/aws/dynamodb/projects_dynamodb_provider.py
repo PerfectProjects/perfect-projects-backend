@@ -75,8 +75,7 @@ class ProjectsDynamodbProvider(BaseDynamodbProvider):
     def update_project(self, project_data):
         try:
             self.table.update_item(
-                Key={"id": project_data.get("id"),
-                     "timestamp": int(project_data.get("timestamp"))},
+                Key={"id": project_data.get("id")},
                 UpdateExpression="set visible=:visible",
                 ExpressionAttributeValues={
                     ":visible": project_data.get("visible"),
