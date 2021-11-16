@@ -26,7 +26,7 @@ class ProjectController:
                 "author": item.get("user_id"),
                 "briefDescription": item.get("brief_description"),
                 "visible": item.get("visible"),
-                "timestamp": int(item.get("timestamp"))
+                "timestamp": int(item.get("last_timestamp"))
             }
             return Response(json.dumps(project),
                             status=200,
@@ -34,13 +34,10 @@ class ProjectController:
         return Response(status=404, mimetype='application/json')
 
     def delete_project(self, project_id):
-        print("yo")
         dynamodb_result = self._dynamodb.delete_project(project_id)
         print(dynamodb_result)
         self._s3.delete_file(f"{project_id}/description")
-        print("yo")
         self._s3.delete_file(f"{project_id}/picture")
-        print("yo")
         s3_result = self._s3.delete_file(f"{project_id}/")
         if dynamodb_result and s3_result:
             return Response(json.dumps({"success": True}),
@@ -83,7 +80,7 @@ class ProjectController:
                         "author": item.get("user_id"),
                         "briefDescription": item.get("brief_description"),
                         "visible": item.get("visible"),
-                        "timestamp": int(item.get("timestamp"))
+                        "timestamp": int(item.get("last_timestamp"))
                     })
             return Response(json.dumps({"projects": projects}),
                             status=200,
@@ -92,7 +89,19 @@ class ProjectController:
 
     def update_project(self, project_data):
         response = self._dynamodb.update_project(project_data)
-        if response:
+
+        project_id = project_data.get("id")
+        self._s3.delete_file(f"{project_id}/description")
+        self._s3.delete_file(f"{project_id}/picture")
+        self._s3.delete_file(f"{project_id}/")
+
+        description = project_data.get("description")
+        binary_description = io.BytesIO(description.encode("ascii"))
+        picture = project_data.get("mainPicture")
+        binary_picture = io.BytesIO(picture.encode("ascii"))
+        response_description = self._s3.upload_object_file(binary_description, f"{project_id}/description")
+        response_picture = self._s3.upload_object_file(binary_picture, f"{project_id}/picture")
+        if response and response_description and response_picture:
             return Response(json.dumps({"success": True}),
                             status=200,
                             mimetype='application/json')

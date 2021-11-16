@@ -23,7 +23,7 @@ class ProjectsDynamodbProvider(BaseDynamodbProvider):
             "title": project.get("title"),
             "brief_description": project.get("briefDescription"),
             "visible": project.get("visible"),
-            "timestamp": current_timestamp
+            "last_timestamp": current_timestamp
         }
         try:
             self.table.put_item(Item=item)
@@ -73,12 +73,20 @@ class ProjectsDynamodbProvider(BaseDynamodbProvider):
         return items
 
     def update_project(self, project_data):
+        current_datetime = datetime.datetime.utcnow()
+        current_timetuple = current_datetime.utctimetuple()
+        current_timestamp = calendar.timegm(current_timetuple)
         try:
             self.table.update_item(
                 Key={"id": project_data.get("id")},
-                UpdateExpression="set visible=:visible",
+                UpdateExpression="set visible=:visible, brief_description=:brief_description, "
+                                 "last_timestamp=:last_timestamp, "
+                                 "title=:title",
                 ExpressionAttributeValues={
                     ":visible": project_data.get("visible"),
+                    ":brief_description": project_data.get("briefDescription"),
+                    ":last_timestamp": current_timestamp,
+                    ":title": project_data.get("title"),
                 })
         except ClientError as error:
             print(error)

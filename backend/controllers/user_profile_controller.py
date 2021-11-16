@@ -32,7 +32,7 @@ class UserProfileController:
                 "author": item.get("user_id"),
                 "briefDescription": item.get("brief_description"),
                 "visible": item.get("visible"),
-                "timestamp": int(item.get("timestamp"))
+                "timestamp": int(item.get("last_timestamp"))
             })
         return Response(json.dumps({"projects": projects}),
                         status=200,
