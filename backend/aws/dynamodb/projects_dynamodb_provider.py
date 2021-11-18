@@ -92,3 +92,16 @@ class ProjectsDynamodbProvider(BaseDynamodbProvider):
             print(error)
             return False
         return True
+
+    def update_visibility(self, project_id, visible):
+        try:
+            self.table.update_item(
+                Key={"id": project_id},
+                UpdateExpression="set visible=:visible",
+                ExpressionAttributeValues={
+                    ":visible": visible
+                })
+        except ClientError as error:
+            print(error)
+            return False
+        return True

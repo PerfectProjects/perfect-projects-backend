@@ -37,3 +37,14 @@ class UserProfileController:
         return Response(json.dumps({"projects": projects}),
                         status=200,
                         mimetype='application/json')
+
+    def update_visibility(self, project_id, visible):
+        dynamo_result = self._dynamodb.update_visibility(project_id, visible)
+
+        if dynamo_result:
+            return Response(json.dumps({"success": True}),
+                            status=200,
+                            mimetype='application/json')
+        return Response(json.dumps({"success": False}),
+                        status=400,
+                        mimetype='application/json')

@@ -35,7 +35,6 @@ class ProjectController:
 
     def delete_project(self, project_id):
         dynamodb_result = self._dynamodb.delete_project(project_id)
-        print(dynamodb_result)
         self._s3.delete_file(f"{project_id}/description")
         self._s3.delete_file(f"{project_id}/picture")
         s3_result = self._s3.delete_file(f"{project_id}/")
