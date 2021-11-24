@@ -1,4 +1,4 @@
-service: perfect-projects-backend
+service: ${self:custom.prefix}-backend
 
 frameworkVersion: '2'
 
@@ -6,17 +6,24 @@ provider:
   name: aws
   runtime: python3.8
   lambdaHashingVersion: 20201221
+  region: ${opt:region}
+  stage: ${opt:stage}
+  stackName: ${self:custom.prefix}-backend
   iam:
     role:
-      name: perfect-project-backend-role
+      name: ${self:custom.prefix}-backend-role
       statements:
         - Effect: 'Allow'
           Action: '*'
           Resource: '*'
   deploymentBucket:
-    name: perfect-project-backend
+    name: perfect-project-deployments
+  environment:
+    REGION: ${opt:region}
+    STAGE: ${opt:stage}
 
 custom:
+  prefix: perfect-projects-${self:provider.stage}-${self:provider.region}
   wsgi:
     app: backend.app
 

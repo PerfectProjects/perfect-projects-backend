@@ -9,8 +9,8 @@ from backend.aws.dynamodb.base_dynamodb_provider import BaseDynamodbProvider
 
 
 class ProjectsDynamodbProvider(BaseDynamodbProvider):
-    def __init__(self):
-        super().__init__("projects")
+    def __init__(self, region, stage):
+        super().__init__(f"perfect-projects-{stage}-{region}-projects")
 
     def add_project(self, project):
         item_id = str(uuid.uuid4())
@@ -100,6 +100,19 @@ class ProjectsDynamodbProvider(BaseDynamodbProvider):
                 UpdateExpression="set visible=:visible",
                 ExpressionAttributeValues={
                     ":visible": visible
+                })
+        except ClientError as error:
+            print(error)
+            return False
+        return True
+
+    def update_points(self, project_id, points):
+        try:
+            self.table.update_item(
+                Key={"id": project_id},
+                UpdateExpression="set points=:points",
+                ExpressionAttributeValues={
+                    ":points": points
                 })
         except ClientError as error:
             print(error)

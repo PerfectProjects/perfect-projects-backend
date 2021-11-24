@@ -1,5 +1,6 @@
 import io
 import json
+import os
 
 from flask import Response, g
 
@@ -9,8 +10,12 @@ from backend.aws.s3.s3_provider import S3Provider
 
 class ProjectController:
     def __init__(self):
-        self._dynamodb = ProjectsDynamodbProvider()
-        self._s3 = S3Provider()
+        self._dynamodb = ProjectsDynamodbProvider(
+            os.environ.get("REGION", "eu-central-1"),
+            os.environ.get("STAGE", "dev"))
+        self._s3 = S3Provider(
+            os.environ.get("REGION", "eu-central-1"),
+            os.environ.get("STAGE", "dev"))
 
     def get_project(self, project_id):
         result = self._dynamodb.get_project(project_id)

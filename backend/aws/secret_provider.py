@@ -7,9 +7,9 @@ from botocore.exceptions import ClientError
 
 class SecretProvider:
 
-    def __init__(self):
-        self._secret_name = "COGNITO_POOL_CLIENT_DATA"
-        self._region_name = "eu-central-1"
+    def __init__(self, region, stage):
+        self._region_name = region
+        self._secret_name = f"PERFECT_PROJECTS_COGNITO_POOL_CLIENT_DATA_{stage.upper()}_{region.upper()}"
 
     def get_secret(self):
         session = boto3.session.Session()

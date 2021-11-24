@@ -1,3 +1,4 @@
+import os
 from functools import wraps
 
 import flask
@@ -10,7 +11,10 @@ from backend.aws.secret_provider import SecretProvider
 def require_authentication(f):
     @wraps(f)
     def is_signed_in(*args, **kwargs):
-        cognito_pool_data = SecretProvider().get_secret()
+        cognito_pool_data = SecretProvider(
+            os.environ.get("REGION", "eu-central-1"),
+            os.environ.get("STAGE", "dev")
+        ).get_secret()
         cognito_provider = CognitoProvider(
             cognito_pool_data.get("COGNITO_POOL_CLIENT_ID"),
             cognito_pool_data.get("COGNITO_POOL_CLIENT_SECRET"))

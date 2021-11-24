@@ -1,5 +1,6 @@
 import base64
 import json
+import os
 
 from flask import Response
 
@@ -11,7 +12,10 @@ from datetime import datetime
 
 class AccessController:
     def __init__(self):
-        self._cognito_pool_data = SecretProvider().get_secret()
+        self._cognito_pool_data = SecretProvider(
+            os.environ.get("REGION", "eu-central-1"),
+            os.environ.get("STAGE", "dev")
+        ).get_secret()
         self._cognito_provider = CognitoProvider(
             self._cognito_pool_data.get("COGNITO_POOL_CLIENT_ID"),
             self._cognito_pool_data.get("COGNITO_POOL_CLIENT_SECRET"))
