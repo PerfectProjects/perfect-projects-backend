@@ -34,7 +34,7 @@ jobs:
           npm install
           npm --version
           pip install pipenv
-          pipenv --sync
+          pipenv sync
           npx serverless --version
           npx serverless deploy --region eu-central-1 --stage dev
 
