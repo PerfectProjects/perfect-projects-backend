@@ -6,6 +6,7 @@ provider:
   name: aws
   runtime: python3.8
   lambdaHashingVersion: 20201221
+  variablesResolutionMode: 20210326
   region: ${opt:region}
   stage: ${opt:stage}
   stackName: ${self:custom.prefix}-backend
@@ -17,7 +18,7 @@ provider:
           Action: '*'
           Resource: '*'
   deploymentBucket:
-    name: perfect-project-deployments
+    name: perfect-projects-deployments
   environment:
     REGION: ${opt:region}
     STAGE: ${opt:stage}
