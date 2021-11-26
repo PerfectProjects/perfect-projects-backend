@@ -18,7 +18,7 @@ provider:
           Action: '*'
           Resource: '*'
   deploymentBucket:
-    name: perfect-projects-deployments
+    name: ${self:custom.prefix}-deployments
   environment:
     REGION: ${opt:region}
     STAGE: ${opt:stage}
