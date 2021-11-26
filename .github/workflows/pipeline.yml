@@ -5,10 +5,10 @@ name: CI
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+#  push:
+#    branches: [ main ]
+#  pull_request:
+#    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -43,4 +43,29 @@ jobs:
           npx serverless --version
           npx serverless deploy --region eu-central-1 --stage dev
 
+  deploy-eu-west-1-dev2:
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
 
+      # Steps represent a sequence of tasks that will be executed as part of the job
+      steps:
+        - name: Configure AWS Credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - uses: actions/checkout@v2
+        - uses: actions/setup-node@v2
+          with:
+            node-version: '16'
+
+        # Runs a single command using the runners shell
+        - name: Run a one-line script
+          run: |
+            npm install
+            npm --version
+            pip install pipenv
+            pipenv sync
+            npx serverless --version
+            npx serverless deploy --region eu-west-2 --stage dev2
