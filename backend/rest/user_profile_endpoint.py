@@ -1,6 +1,6 @@
 import json
 
-from flask import Blueprint, request
+from flask import Blueprint, request, g
 
 from backend.controllers.user_profile_controller import UserProfileController
 from backend.decorators import require_authentication

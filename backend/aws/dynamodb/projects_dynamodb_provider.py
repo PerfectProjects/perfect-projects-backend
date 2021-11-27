@@ -105,16 +105,3 @@ class ProjectsDynamodbProvider(BaseDynamodbProvider):
             print(error)
             return False
         return True
-
-    def update_points(self, project_id, points):
-        try:
-            self.table.update_item(
-                Key={"id": project_id},
-                UpdateExpression="set points=:points",
-                ExpressionAttributeValues={
-                    ":points": points
-                })
-        except ClientError as error:
-            print(error)
-            return False
-        return True
