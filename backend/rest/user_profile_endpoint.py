@@ -22,3 +22,9 @@ def update_visibility():
     project_id = decoded_data.get("projectId")
     visible = decoded_data.get("visible")
     return UserProfileController().update_visibility(project_id, visible)
+
+
+@user_profile.route("/user-profile/get-saved-projects", methods=["GET"])
+@require_authentication
+def get_saved_projects():
+    return UserProfileController().get_saved_projects()
