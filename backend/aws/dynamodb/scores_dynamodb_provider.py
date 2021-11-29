@@ -46,3 +46,15 @@ class ScoresDynamodbProvider(BaseDynamodbProvider):
         if result.get("Item"):
             return True
         return False
+
+    def delete_all_project_scores(self, project_id):
+        try:
+            result = self.table.query(IndexName="project_id",
+                                      KeyConditionExpression=Key("project_id").eq(project_id))
+            items = result.get("Items")
+            for item in items:
+                self.delete_score(item.get("user_id"), item.get("project_id"))
+        except ClientError as error:
+            print(error)
+            return False
+        return True

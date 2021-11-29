@@ -5,12 +5,20 @@ import os
 from flask import Response, g
 
 from backend.aws.dynamodb.projects_dynamodb_provider import ProjectsDynamodbProvider
+from backend.aws.dynamodb.saved_projects_dynamodb_provider import SavedProjectsDynamodbProvider
+from backend.aws.dynamodb.scores_dynamodb_provider import ScoresDynamodbProvider
 from backend.aws.s3.s3_provider import S3Provider
 
 
 class ProjectController:
     def __init__(self):
         self._dynamodb = ProjectsDynamodbProvider(
+            os.environ.get("REGION", "eu-central-1"),
+            os.environ.get("STAGE", "dev"))
+        self._dynamodb_saved_projects = SavedProjectsDynamodbProvider(
+            os.environ.get("REGION", "eu-central-1"),
+            os.environ.get("STAGE", "dev"))
+        self._dynamodb_scores = ScoresDynamodbProvider(
             os.environ.get("REGION", "eu-central-1"),
             os.environ.get("STAGE", "dev"))
         self._s3 = S3Provider(
@@ -43,6 +51,10 @@ class ProjectController:
         self._s3.delete_file(f"{project_id}/description")
         self._s3.delete_file(f"{project_id}/picture")
         s3_result = self._s3.delete_file(f"{project_id}/")
+
+        self._dynamodb_saved_projects.delete_all_project_saves(project_id)
+        self._dynamodb_scores.delete_all_project_scores(project_id)
+
         if dynamodb_result and s3_result:
             return Response(json.dumps({"success": True}),
                             status=200,
