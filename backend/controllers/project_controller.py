@@ -28,9 +28,17 @@ class ProjectController:
     def get_project(self, project_id):
         result = self._dynamodb.get_project(project_id)
         if result:
+            item = result.get("Item")
+            if item.get("visible") is False:
+                user = g.get("user")
+                if user is not None:
+                    if item.get("user_id") != g.user.get("Username"):
+                        return Response(status=404, mimetype='application/json')
+                else:
+                    return Response(status=404, mimetype='application/json')
+
             item_description = self._s3.get_file(f"{project_id}/description").get("Body").read().decode("ascii")
             item_picture = self._s3.get_file(f"{project_id}/picture").get("Body").read().decode("ascii")
-            item = result.get("Item")
             project = {
                 "id": item.get("id"),
                 "title": item.get("title"),
@@ -81,7 +89,7 @@ class ProjectController:
                         status=200,
                         mimetype='application/json')
 
-    def get_project_page(self, page):
+    def get_projects_page(self, page):
         items = self._dynamodb.get_projects(page)
         if items:
             projects = []

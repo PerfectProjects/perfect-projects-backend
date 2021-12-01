@@ -3,13 +3,13 @@ import json
 from flask import Blueprint, request
 
 from backend.controllers.project_controller import ProjectController
-from backend.decorators import require_authentication
+from backend.decorators import require_authentication, possible_authentication
 
 project = Blueprint("project", __name__)
 
 
 @project.route("/project", methods=["GET"])
-@require_authentication
+@possible_authentication
 def project_endpoint():
     project_id = request.args.get("id")
     return ProjectController().get_project(project_id)
@@ -36,7 +36,7 @@ def delete_project_endpoint():
 @project.route('/projects', methods=["GET"])
 def get_project_page():
     page = request.args.get("page")
-    return ProjectController().get_project_page(int(page))
+    return ProjectController().get_projects_page(int(page))
 
 
 @project.route('/project/update', methods=["POST"])
