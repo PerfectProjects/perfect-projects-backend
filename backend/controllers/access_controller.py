@@ -37,7 +37,7 @@ class AccessController:
                                 base64.b64encode(user.get("username").encode()).decode(),
                                 samesite="None",
                                 secure=True,
-                                domain=".perfect-projects.com",
+                                domain=".perfect-projects.link",
                                 expires=datetime.now().timestamp() + REFRESH_TOKEN_EXPIRE * 60)
             return response
         return Response(status=401)

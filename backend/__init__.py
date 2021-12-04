@@ -8,7 +8,7 @@ from backend.rest.scores_endpoint import scores
 from backend.rest.user_profile_endpoint import user_profile
 
 app = Flask(__name__)
-cors = CORS(app, supports_credentials=True, origins=["https://perfect-projects.com:4200"])
+cors = CORS(app, supports_credentials=True, origins=["https://perfect-projects.com:4200", "https://frontend.perfect-projects.link"])
 
 # Registered endpoints
 app.register_blueprint(access)
