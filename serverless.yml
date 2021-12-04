@@ -30,7 +30,14 @@ custom:
   customCertificate:
     certificateName: api-${opt:stage}-${opt:region}.perfect-projects.link
     hostedZoneIds: Z046301435EGQHE8A33R6
-    region: ${opt:region}
+    region: us-east-1 # This specific region is required due to an error from Serverless Domain Manager
+  customDomain:
+    domainName: api-${opt:stage}-${opt:region}.perfect-projects.link
+    certificateName: api-${opt:stage}-${opt:region}.perfect-projects.link
+    createRoute53Record: true
+    endpointType: edge
+    securityPolicy: tls_1_2
+    apiType: rest
 
 functions:
   api:
