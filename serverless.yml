@@ -27,6 +27,10 @@ custom:
   prefix: perfect-projects-${self:provider.stage}-${self:provider.region}
   wsgi:
     app: backend.app
+  customCertificate:
+    certificateName: api-${opt:stage}-${opt:region}.perfect-projects.link
+    hostedZoneIds: Z046301435EGQHE8A33R6
+    region: ${opt:region}
 
 functions:
   api:
@@ -39,3 +43,4 @@ plugins:
   - serverless-deployment-bucket
   - serverless-wsgi
   - serverless-python-requirements
+  - serverless-certificate-creator
