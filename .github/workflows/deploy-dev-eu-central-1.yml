@@ -7,7 +7,7 @@ jobs:
   deploy-eu-central-1-dev:
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS Credentials
+      - name: configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -17,11 +17,11 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - name: Run a one-line script
-        run: |
-          npm install
-          npm --version
-          pip install pipenv
-          pipenv sync
-          npx serverless --version
-          npx serverless deploy --region eu-central-1 --stage dev
+      - name: install npm dependencies
+        run: npm install
+      - name:  install pipenv
+        run:  pip install pipenv
+      - name: install pipenv dependencies
+        run: pipenv sync
+      - name: deploy
+        run: npx serverless deploy --region eu-central-1 --stage dev
