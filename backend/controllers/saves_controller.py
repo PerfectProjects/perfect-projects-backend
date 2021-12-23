@@ -3,7 +3,7 @@ import os
 
 from flask import Response, g
 
-from backend.aws.dynamodb.saved_projects_dynamodb_provider import SavedProjectsDynamodbProvider
+from backend.aws.dynamodb.saves_dynamodb_provider import SavedProjectsDynamodbProvider
 from backend.aws.dynamodb.scores_dynamodb_provider import ScoresDynamodbProvider
 
 

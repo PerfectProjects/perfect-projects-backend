@@ -2,7 +2,7 @@ import json
 
 from flask import Blueprint, request
 
-from backend.controllers.saved_projects_controller import SavedProjectsController
+from backend.controllers.saves_controller import SavedProjectsController
 from backend.decorators import require_authentication
 
 saves = Blueprint("saves", __name__)
