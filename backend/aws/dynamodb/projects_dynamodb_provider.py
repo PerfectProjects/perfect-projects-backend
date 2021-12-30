@@ -19,7 +19,7 @@ class ProjectsDynamodbProvider(BaseDynamodbProvider):
         current_timestamp = calendar.timegm(current_timetuple)
         item = {
             "id": item_id,
-            "user_id": project.get("author"),
+            "user_id": project.get("author").lower(),
             "title": project.get("title"),
             "brief_description": project.get("briefDescription"),
             "visible": project.get("visible"),
