@@ -29,7 +29,7 @@ custom:
     app: backend.app
   customCertificate:
     certificateName: api-${opt:stage}-${opt:region}.perfect-projects.link
-    hostedZoneIds: Z046301435EGQHE8A33R6
+    hostedZoneIds: Z0244622OB5I5GBJSX1D
     region: us-east-1 # This specific region is required due to an error from Serverless Domain Manager
   customDomain:
     domainName: api-${opt:stage}-${opt:region}.perfect-projects.link
