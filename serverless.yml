@@ -1,12 +1,10 @@
 service: ${self:custom.prefix}-backend
 
-frameworkVersion: '2'
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.11
   lambdaHashingVersion: 20201221
-  variablesResolutionMode: 20210326
   region: ${opt:region}
   stage: ${opt:stage}
   stackName: ${self:custom.prefix}-backend
@@ -22,6 +20,13 @@ provider:
   environment:
     REGION: ${opt:region}
     STAGE: ${opt:stage}
+
+package:
+  excludeDevDependencies: true
+
+  individually: true
+  patterns:
+    - '!node_modules/**'
 
 custom:
   prefix: perfect-projects-${self:provider.stage}-${self:provider.region}

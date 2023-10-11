@@ -17,13 +17,13 @@
   },
   "homepage": "https://github.com/PerfectProjects/perfect-projects-backend#readme",
   "dependencies": {
-    "serverless": "^2.62.0"
+    "serverless": "3.35.2"
   },
   "devDependencies": {
-    "serverless-certificate-creator": "^1.6.0",
-    "serverless-deployment-bucket": "^1.5.1",
-    "serverless-domain-manager": "^5.2.0",
-    "serverless-python-requirements": "^5.1.1",
-    "serverless-wsgi": "^2.0.2"
+    "serverless-certificate-creator": "1.6.0",
+    "serverless-deployment-bucket": "1.6.0",
+    "serverless-domain-manager": "7.1.2",
+    "serverless-python-requirements": "6.0.0",
+    "serverless-wsgi": "3.0.3"
   }
 }
