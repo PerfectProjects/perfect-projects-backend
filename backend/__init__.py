@@ -13,11 +13,13 @@ app = Flask(__name__)
 stage = os.environ.get("STAGE", "dev")
 region = os.environ.get("REGION", "eu-central-1")
 url = f'https://{stage}-{region}.perfect-projects.link'
+main_url = f'https://perfect-projects.link'
+www_main_url = f'https://www.perfect-projects.link'
 www_url = f'https://www.{stage}-{region}.perfect-projects.link'
 local_url = "https://perfect-projects.link:4200"
 cors = CORS(app,
             supports_credentials=True,
-            origins=[local_url, www_url, url])
+            origins=[local_url, www_url, url, main_url, www_main_url])
 
 # Registered endpoints
 app.register_blueprint(access)
