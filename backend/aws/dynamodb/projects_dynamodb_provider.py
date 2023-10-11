@@ -58,7 +58,7 @@ class ProjectsDynamodbProvider(BaseDynamodbProvider):
         return item
 
     def get_projects(self, page):
-        limit = 3
+        limit = 6
         try:
             response = self.table.scan(Limit=limit)
             for x in range(page - 1):
